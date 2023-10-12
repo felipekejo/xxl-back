@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  OWNER
+}
+
+model User {
+  id              String           @id @default(uuid())
+  first_name      String
+  last_name       String
+  email           String           @unique
+  password_hash   String
+  role            Role             @default(CUSTOMER)
+  reset_key       String?          @unique
+  key_date        DateTime?
+  contactMessages ContactMessage[]
+
+  orders Order[]
+
+  @@map("users")
+}
+
+model Product {
+  id               String            @id @default(uuid())
+  name             String
+  price            Float
+  stock            Int
+  discount         Boolean
+  discountTotal    Float
+  img_urls         String[]
+  briefDescription String
+  keyInfo          String
+  AboutItem        String
+  technicalDetails TechnicalDetail[]
+  ItemLine         ItemLine[]
+  priceId          String
+  stripeId         String
+  discountStripeId String?
+
+  @@map("products")
+}
+
+model TechnicalDetail {
+  id          String  @id @default(uuid())
+  detailName  String
+  detailValue String
+  productId   String  @map("product_id")
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("technical_details")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  userId    String?  @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replied   Boolean?
+
+  @@map("contact_messages")
+}
+
+model Phone {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  services Service[]
+
+  @@map("phones")
+}
+
+model Banner {
+  id      String @id @default(uuid())
+  img_url String
+
+  @@map("banners")
+}
+
+model SecondAd {
+  id      String @id @default(uuid())
+  img_url String
+
+  @@map("second_ads")
+}
+
+model Service {
+  id      String @id @default(uuid())
+  name    String
+  price   Float
+  Phone   Phone  @relation(fields: [phoneId], references: [id], onDelete: Cascade)
+  phoneId String
+
+  @@map("services")
+}
+
+model Repair {
+  id                 String  @id @default(uuid())
+  title              String
+  problemDescription String
+  contact            String?
+  serviceId          String?
+
+  @@map("repairs")
+}
+
+enum OrderStatus {
+  Received
+  Sent
+  Delivered
+}
+
+model Order {
+  orderNo         String      @id @default(uuid())
+  sessionId       String      @unique
+  status          OrderStatus @default(Received)
+  orderDate       DateTime    @default(now()) @map("created_at")
+  deliveryAddress String
+  customer        User        @relation(fields: [customer_id], references: [id])
+  customer_id     String
+  itemLines       ItemLine[]
+  total           Float
+
+  @@map("orders")
+}
+
+model ItemLine {
+  id           String  @id @default(uuid())
+  order        Order   @relation(fields: [order_id], references: [orderNo], onDelete: Cascade)
+  order_id     String
+  quantity     Int
+  product      Product @relation(fields: [product_id], references: [id])
+  product_id   String
+  product_name String
+  unitaryPrice Float
+
+  @@map("item_lines")
+}
+
+model Invoice {
+  id       String @id @default(uuid())
+  order_id String
+  pdf_url  String
+
+  @@map("invoices")
+}
