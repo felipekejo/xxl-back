@@ -42,6 +42,7 @@ export async function uploadBanner(
     );
     fs.writeFileSync(filePath, buffer);
     const bannerStreamed = fs.createReadStream(filePath);
+
     const type = banner.mimetype;
     const data = await uploadFile(bannerStreamed, fileName, type);
 

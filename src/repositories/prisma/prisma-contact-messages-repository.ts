@@ -5,7 +5,9 @@ import { prisma } from "@/lib/prisma";
 /**
  * PrismaContactMessagesRepository implements the ContactMessagesRepository interface using Prisma.
  */
-export class PrismaContactMessagesRepository implements ContactMessagesRepository {
+export class PrismaContactMessagesRepository
+  implements ContactMessagesRepository
+{
   /**
    * Retrieves a contact message by its ID.
    *
@@ -29,18 +31,21 @@ export class PrismaContactMessagesRepository implements ContactMessagesRepositor
    * @param {Prisma.ContactMessageCreateInput} messageData - The data for creating the contact message.
    * @returns {Promise<ContactMessage>} The created contact message.
    */
-  async create(userId: string | null, messageData: Prisma.ContactMessageCreateInput): Promise<ContactMessage> {
+  async create(
+    userId: string | null,
+    messageData: Prisma.ContactMessageCreateInput
+  ): Promise<ContactMessage> {
     const message = await prisma.contactMessage.create({
       data: {
         ...messageData,
         ...(userId
           ? {
-            user: {
-              connect: {
-                id: userId,
+              user: {
+                connect: {
+                  id: userId,
+                },
               },
-            },
-          }
+            }
           : {}),
       },
     });
@@ -80,7 +85,10 @@ export class PrismaContactMessagesRepository implements ContactMessagesRepositor
    * @param {Partial<Prisma.ContactMessageUpdateInput>} data - The updated data for the contact message.
    * @returns {Promise<ContactMessage | null>} The updated contact message, or null if not found.
    */
-  async update(id: string, data: Partial<Prisma.ContactMessageUpdateInput>): Promise<ContactMessage | null> {
+  async update(
+    id: string,
+    data: Partial<Prisma.ContactMessageUpdateInput>
+  ): Promise<ContactMessage | null> {
     const updatedMessage = await prisma.contactMessage.update({
       where: { id },
       data,

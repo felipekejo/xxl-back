@@ -16,6 +16,8 @@ import { orderRoutes } from "./http/controllers/order/routes";
 import fastifyMultipart from "@fastify/multipart";
 import formBody from "@fastify/formbody";
 import { advertisementRoutes } from "./http/controllers/advertisement/routes";
+import view from "@fastify/view";
+import ejs from "ejs";
 
 // Initializing the Fastify application
 export const app = fastify({
@@ -27,6 +29,12 @@ export const app = fastify({
 app.register(cors, {
   origin: true,
   credentials: true,
+});
+
+app.register(view, {
+  engine: {
+    ejs,
+  },
 });
 
 app.register(fastifyMultipart);

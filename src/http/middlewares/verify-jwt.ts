@@ -10,7 +10,7 @@ Middleware function to verify a JSON Web Token (JWT) sent in the request header.
 export async function verifyJWT(request: FastifyRequest, reply: FastifyReply) {
   try {
     await request.jwtVerify();
-  } catch (err) {
+  } catch (err: any) {
     return reply.status(401).send({ message: "Unauthorized!", code: err.code });
   }
 }

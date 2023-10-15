@@ -99,7 +99,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async getInvoiceByOrderNo(orderNo: string) {
-    const invoice = await prisma.invoice.findUnique({
+    const invoice = await prisma.invoice.findFirst({
       where: {
         order_id: orderNo,
       },
@@ -115,7 +115,10 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   // Inside PrismaOrdersRepository class
-  async updateOrderStatus(orderNo: string, status: "Received" | "Sent" | "Delivered") {
+  async updateOrderStatus(
+    orderNo: string,
+    status: "Received" | "Sent" | "Delivered"
+  ) {
     // Check if the order exists
     const orderExists = await prisma.order.findUnique({
       where: {

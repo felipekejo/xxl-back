@@ -22,6 +22,6 @@ export interface GetProductCheckout {
     quantity: number;
     price: number;
     productName: string;
-    image: string;
+    image: string[];
   }[];
 }

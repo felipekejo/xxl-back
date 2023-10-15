@@ -146,7 +146,7 @@ export class PrismaServicesRepository implements ServicesRepository {
 
   /**
    * Deletes a service by its ID.
-   *   
+   *
    * @param {string} serviceId - The ID of the service to delete.
    */
   async deleteServiceById(serviceId: string): Promise<void> {

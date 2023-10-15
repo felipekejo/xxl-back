@@ -34,6 +34,7 @@ export class StripeCheckOutRepository implements CheckOutRepository {
         postal_code: session.customer_details?.address?.postal_code,
       },
       checkoutProducts,
+      customerId: session.customer,
     };
 
     return checkoutSession;
