@@ -21,7 +21,7 @@ import ejs from "ejs";
 
 // Initializing the Fastify application
 export const app = fastify({
-  logger: true,
+  // logger: true,
   bodyLimit: 30 * 1024 * 1024,
 });
 
