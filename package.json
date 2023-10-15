@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
-    "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "start": "node dist/server.js",
+    "build": "tsup src"
   },
   "keywords": [],
   "author": "",
